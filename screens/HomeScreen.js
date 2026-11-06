@@ -1,3 +1,4 @@
+import { useDemoUser } from '../components/demoAuth';
 import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BottomNav from '../components/BottomNav';
@@ -5,12 +6,13 @@ import { COLORS, money, transactions } from '../components/theme';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const user = useDemoUser();
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.header}>
-          <Text style={styles.greeting}>Good Morning, Amina 👋</Text>
+          <Text style={styles.greeting}>Good Morning, {user?.name?.split(' ')[0] || 'Guest'} 👋</Text>
           <Text style={styles.heading}>Financial Overview</Text>
 
           <View style={styles.balanceCard}>
@@ -24,6 +26,26 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.body}>
+          {/* FINWISE_TOOLS_START */}
+          <Text style={styles.title}>Money Tools</Text>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: 12, marginBottom: 20 }}>
+            {[
+              ['My Cards', '/my-cards'],
+              ['Add Card', '/add-card'],
+              ['Budget', '/budget'],
+              ['Add Budget', '/add-budget'],
+              ['Savings Goals', '/savings-goals'],
+              ['Add Goal', '/add-goal'],
+              ['Analytics', '/analytics'],
+              ['Transfer Money', '/transfer-money'],
+            ].map(([label, route]) => (
+              <TouchableOpacity key={route} onPress={() => router.push(route)} style={{ width: '48%', backgroundColor: '#FFFFFF', borderRadius: 15, padding: 17, marginBottom: 12, borderWidth: 1, borderColor: '#DDF8EB' }}>
+                <Text style={{ fontWeight: '700', color: COLORS.dark }}>{label}</Text>
+                <Text style={{ color: COLORS.primary, marginTop: 7 }}>Open</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          {/* FINWISE_TOOLS_END */}
           <View style={styles.row}>
             <Text style={styles.title}>Recent Transactions</Text>
             <TouchableOpacity onPress={() => router.push('/transactions')}>
